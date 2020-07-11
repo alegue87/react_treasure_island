@@ -1,0 +1,23 @@
+.App {
+  display: flex;
+  flex-direction: column;
+}
+
+.view-port {
+  min-height: 100vh;
+}
+
+.main-container {
+  height: 100%;
+  padding:1em;
+}
+
+.header-container {
+  background-color: #3498FF;
+}
+
+.footer-container {
+  background-color: #3498FF;
+  line-height: 8;
+  text-align:center;
+}

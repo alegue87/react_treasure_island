@@ -1,0 +1,78 @@
+.main-nav  .navbar-brand {
+  padding: 18px 20px;
+  display: inline-block;
+}
+
+.main-nav .rs-nav-item a {
+  color:white;
+  padding:18px;
+  display: block;
+}
+
+.main-nav .rs-nav-item a:hover {
+  text-decoration: none;
+  color:white;
+}
+
+.main-nav  .rs-nav-item-content a {
+  color:white;
+  text-decoration:none
+}
+
+.main-nav  .rs-nav-item-content {
+  padding:0px!important; /* necessari per ampliare l'area di click dell'ancora */
+  height: 100%!important;
+  display:flex!important; /* per le icone in nav */
+  align-items: center
+}
+
+.main-nav  .rs-nav-item-content .rs-icon{
+  height:100%;
+  margin-right:-13px!important;
+  margin-left:18px;
+}
+
+.main-nav .rs-dropdown-item .rs-dropdown-item-content:not(.rs-dropdown-menu-toggle){
+  padding:0px!important;
+}
+
+.main-nav .rs-dropdown-item .rs-dropdown-item-content a{
+  padding:8px 12px!important;
+  display: block;
+  text-decoration: none;
+}
+
+.main-nav .dropdown-item {
+  padding:8px 12px!important;
+  display: block;
+}
+
+/* Sidenav */
+
+.sidenav-compact {
+  height: 56px;
+  overflow: hidden;
+}
+
+.rs-sidenav .rs-nav-item-content {
+  height: 56px!important;
+  padding-top:0px!important; /* incrementa spazio click per componente Link */
+  padding-bottom:0px!important;
+  padding-right:0px!important;
+}
+
+.rs-sidenav .rs-dropdown-item-content {
+  padding-top:0px!important;
+  padding-right:0px!important;
+  padding-bottom:0px!important;
+}
+
+.rs-sidenav a {
+  color:white;
+  padding:15px 20px 15px 0px;
+  display:block;
+}
+
+.rs-sidenav a:focus, .rs-sidenav a:hover {
+  text-decoration: none;
+}

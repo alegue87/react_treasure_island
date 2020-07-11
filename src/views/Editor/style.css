@@ -1,0 +1,50 @@
+.piece {
+  border-top:8px solid antiquewhite;
+  display:inline-block
+}
+
+.piece:hover {
+  color:blue;
+  border-top: 8px solid blue;
+  cursor: pointer;
+}
+
+.piece.selected {
+  border-top:8px solid blue;
+}
+
+p {
+  font-size:22px;
+}
+
+.player-editor {
+  margin-top:50px;
+  top: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  opacity: 1;
+  z-index: 1;
+}
+
+.player-editor .rs-panel-body {
+  display: flex;
+  width:100%;
+  flex-direction: row;
+  justify-content: start;
+}
+
+.player-editor .rs-btn {
+  margin-right:5px;
+}
+
+
+.right-panel .rs-panel-body {
+  height: 820px;
+  overflow: hidden;
+}
+
+.fixed {
+  position: fixed;
+  right:0
+}

@@ -1,0 +1,29 @@
+
+
+.audio-container {
+  display: flex;
+  flex-direction:column;
+  margin-bottom:3px;
+  padding:2px;
+  text-align:center;
+
+}
+
+.audio-container:hover{
+  background: lightblue;
+  cursor:pointer;
+}
+
+.audio-container.selected {
+  color:white;
+  background: blue;
+}
+
+audio {
+  width: 50px;
+  margin:auto;
+}
+
+.hidden {
+  display: none;
+}
