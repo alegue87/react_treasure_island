@@ -5,6 +5,8 @@ import { getPosts, getReferences, isFetching } from './reducer';
 import { Panel, FlexboxGrid, Col, Button, Sidenav, Notification } from 'rsuite';
 import _ from 'lodash';
 import { Howl, Howler } from 'howler';
+import Dictionary from '../../components/Dictionary';
+
 //import $ from 'jquery';
 
 import './style.css';
@@ -48,7 +50,9 @@ class Reader extends React.Component {
       action: '',
       stopPlay: false,
       postEng: postEng,
-      postIta: postIta
+      postIta: postIta,
+      wordSelected: '',       // word for traduction
+      showTraduction: false   // show Drawer traduction
 
     }
     this.oldSelected = this.state.selected;
@@ -56,6 +60,7 @@ class Reader extends React.Component {
     this.play = this.play.bind(this);
     this.playAll = this.playAll.bind(this);
     this.playIndex = 0;
+    this.hideTraduction = this.hideTraduction.bind(this);
 
     this.fetchData()
     //Notification['info']({title:'construct'})
@@ -143,13 +148,16 @@ class Reader extends React.Component {
 
   onlyWord(word){
     word = word.replace(/&nbsp;/g, '')
-    return word.replace(/[".,\/#!$%\^&\*;:{}=\-_`~()“”]/g,"")
+    return word.replace(/[".,\/#!$%\^&\*;:{}=\-_`~()“”]/g,"") // '
   }
 
   handleSelect(e){
     let current = e.currentTarget;
     this.selectedPiece = current.id;
-    Notification['info']({title: 'Word selected', description:this.onlyWord(current.innerHTML)})
+    const word = this.onlyWord(current.innerHTML);
+    Notification['info']({title: 'Word selected', description:word});
+    this.setState({wordSelected: word})
+
     if(current.classList.contains('selectable')) {
       this.updateSelection(current);
     }
@@ -229,6 +237,11 @@ class Reader extends React.Component {
     setTimeout(()=> this.setState({action: '' }), 100)
   }
 
+
+  hideTraduction(){
+    this.setState({showTraduction: false})
+  }
+
   render(){
 
     const postEng = this.props.posts.find( post => post.id === Number(this.state.postEng) )
@@ -257,6 +270,8 @@ class Reader extends React.Component {
               <Button onClick={ () => this.play() }>Play</Button>
               <Button onClick={ this.playAll }>Play All</Button>
               <Button onClick={ () => this.setState({stopPlay: true}) }>Stop</Button>
+              <Button onClick={ () => this.setState({showTraduction:true}) }>Show word definitions</Button>
+
               {/*<Button onClick={ () => this.trigger('insert') }>Insert</Button>*/}
             </Panel>
           </FlexboxGrid.Item>
@@ -270,6 +285,11 @@ class Reader extends React.Component {
               <div dangerouslySetInnerHTML={{__html: itaContent}}/>
             </Panel>
           </FlexboxGrid.Item>
+          <Dictionary
+            word={this.state.wordSelected}
+            show={this.state.showTraduction}
+            close={ this.hideTraduction }
+          />
         </FlexboxGrid>
       )
     }

@@ -44,9 +44,12 @@ p {
 
 .player .rs-panel-body {
   display: flex;
-  width:21em;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: start;
+}
+
+.player .rs-panel-body .rs-btn {
+  margin-right:5px;
 }
 
 .text-container {

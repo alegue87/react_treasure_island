@@ -13,6 +13,7 @@ import posts from './views/Editor/reducer';
 import reader from './views/Reader/reducer';
 import audio from './components/Audio/reducer';
 import category from './components/Menu/reducer';
+import dictionary from './components/Dictionary/reducer';
 
 /*
 import reviews from './components/Reviews/reducer';
@@ -32,7 +33,8 @@ const rootPersistConfig = {
     'posts',
     'audio',
     'reader',
-    'category'
+    'category',
+    'dictionary'
   ],
   // debug: true,
 };
@@ -70,6 +72,14 @@ const rootReducer = persistCombineReducers(rootPersistConfig, {
       blacklist: config.OFFLINE ? ['isFetching', 'hasMore'] : ['isSetting'],
     },
     category,
+  ),
+  dictionary: persistReducer(
+    {
+      key: 'dictionary',
+      storage,
+      blacklist: config.OFFLINE ? ['isFetching', 'hasMore'] : ['isSetting'],
+    },
+    dictionary,
   ), 
 });
 
