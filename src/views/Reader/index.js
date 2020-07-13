@@ -134,7 +134,7 @@ class Reader extends React.Component {
     const references = this.getReferences()
     //this.oldSelected = this.state.selected;
     if( !_.isEmpty(references) && !tooEarly(1000) ) {
-      _.delay(this.insertReferencesIntoText.bind(this), 1000, references)
+      _.delay(this.insertReferencesIntoText.bind(this), 1500, references)
       _.delay(this.alignText.bind(this), 1500)
     }
   }
@@ -148,21 +148,26 @@ class Reader extends React.Component {
 
   onlyWord(word){
     word = word.replace(/&nbsp;/g, '')
-    return word.replace(/[".,\/#!$%\^&\*;:{}=\-_`~()“”]/g,"") // '
+    return word.replace(/[".,\/#!?$%\^&\*;:{}=\-_`~()“”]/g,"") // '
   }
 
   handleSelect(e){
     let current = e.currentTarget;
     this.selectedPiece = current.id;
-    const word = this.onlyWord(current.innerHTML);
-    Notification['info']({title: 'Word selected', description:word});
-    this.setState({wordSelected: word})
 
     if(current.classList.contains('selectable')) {
       this.updateSelection(current);
+      const reference = `${this.state.postEng}-${current.id}`;
+      this.setState({
+        selected: current.id, 
+        selectedReference: reference
+      });
     }
-    const reference = `${this.state.postEng}-${current.id}`;
-    this.setState({selected: current.id, selectedReference: reference});
+    const word = this.onlyWord(current.innerHTML);
+    Notification['info']({'placement':'topStart', title: 'Word selected', description:word});
+    this.setState({
+      wordSelected: word
+    });
   }
 
   play(index=0, onEnd=null) {
@@ -170,7 +175,7 @@ class Reader extends React.Component {
     const references = this.getReferences()
 
     if(_.isEmpty(selectedReference)) {
-      alert('selezionare l\'audio prima!')
+      Notification['info']({'placement': 'topStart', title:'Need selection first'});
       return
     }
 
