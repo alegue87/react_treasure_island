@@ -48,6 +48,7 @@ class Editor extends React.Component {
       action: '',
       canAttach:false,
       allAudio:false,
+      actionList: [],
     }
     this.oldSelected = this.state.selected;
     this.handleSelect = this.handleSelect.bind(this);
@@ -67,8 +68,15 @@ class Editor extends React.Component {
     this.setState({})
   }
 
-  componentDidUpdate(){
+  componentDidUpdate(prevProps, prevState){
     this.oldSelected = this.state.selected;
+
+    if(!_.isEmpty(this.state.actionList)) { // execute actions 'insert' - 'next' and 'play'
+      let actionList = this.state.actionList;
+      if(prevState.action !== actionList[actionList.length-1]) {
+        this.setState({action: actionList.pop()})
+      }
+    }
   }
 
   handleSelect(e){
@@ -92,14 +100,16 @@ class Editor extends React.Component {
       Notification['info']({title: 'Abilitare inserimento'})
       return
     }
-    this.trigger('insert');
-    _.delay( this.trigger.bind(this), 50, 'next');
-    _.delay( this.trigger.bind(this), 200, 'play');
+
+    let actionList = [];
+    actionList.push('play');
+    actionList.push('next');
+    actionList.push('insert');
+    this.setState({actionList});
   }
 
   trigger(action){
     this.setState({action: action})
-    setTimeout(()=> this.setState({action: '' }), 100)
   }
 
   render(){
