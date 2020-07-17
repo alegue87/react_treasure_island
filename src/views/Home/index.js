@@ -6,6 +6,7 @@ export default function Home() {
 
   return(
     <Panel bordered header='home'>
+      <h1>Audio libri - Bilingue</h1>
     </Panel>
   )
 }

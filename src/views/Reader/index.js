@@ -281,11 +281,13 @@ class Reader extends React.Component {
             </Panel>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item id='eng' className='text-container eng' componentClass={Col} xs={12} sm={12} lg={12} xl={12}>
+            <h2 dangerouslySetInnerHTML={{__html: postEng.title.rendered}}></h2>
             <Panel>
               {content}
             </Panel>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item id='ita' className='text-container ita' componentClass={Col} xs={12} sm={12} lg={12} xl={12}>
+            <h2 dangerouslySetInnerHTML={{__html: postIta.title.rendered}}></h2>
             <Panel>
               <div dangerouslySetInnerHTML={{__html: itaContent}}/>
             </Panel>

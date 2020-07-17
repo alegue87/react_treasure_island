@@ -133,25 +133,40 @@ const DropdownCategory = (title, posts) => {
   if(_.isEmpty(posts)) return null;
 
   let list = [];
-  _.forEach(posts, post => {
+  let descriptionList = []
+  _.forEach(posts, (post, key) => {
     if( _.find(post.tags, tag => tag.name === 'eng') ) {
-
-      let cap = _.find(post.tags, tag => tag.name.split('-')[0] === 'chapter' )
-      let engPost = post;
-      let itaPost = getPost(posts, cap.name, 'ita');
+      const cap = _.find(post.tags, tag => tag.name.split('-')[0] === 'chapter' )
+      const engPost = post;
+      const itaPost = getPost(posts, cap.name, 'ita');
       //list[cap.name] = {'eng': engPost, 'ita': itaPost }
-      list.push(
-      <Dropdown.Item><div style={{display:'flex'}}>
-        <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>{_.capitalize(cap.name.split('-')[0]) + ' ' + cap.name.split('-')[1]}</Link> <divider />
-        <Link to={"/editor/"+engPost.ID}>EDIT</Link></div>
-      </Dropdown.Item>)
+      const subCategoryName = post.sub_category.name;
+      if(list[subCategoryName] === undefined) {
+        list[subCategoryName] = [];
+        descriptionList[subCategoryName] = []
+      }
+      list[subCategoryName].push(
+        <Dropdown.Item key={key}><div style={{display:'flex'}}>
+          <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>{_.capitalize(cap.name.split('-')[0]) + ' ' + cap.name.split('-')[1]}</Link> <divider />
+          <Link to={"/editor/"+engPost.ID}>EDIT</Link></div>
+        </Dropdown.Item>
+      )
+      descriptionList[subCategoryName] = post.sub_category.description;
     }
 
   })
 
+  let parts = [];
+  for(let partName in list) {
+    parts.push(
+      <Dropdown.Menu key={partName} title={partName + ' - '  + descriptionList[partName]}>
+        {list[partName]}
+      </Dropdown.Menu>
+    )
+  }
   return (
     <Dropdown title={title}>
-      {list}
+      {parts}
     </Dropdown>
   )
 }

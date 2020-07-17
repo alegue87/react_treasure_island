@@ -76,3 +76,8 @@
 .rs-sidenav a:focus, .rs-sidenav a:hover {
   text-decoration: none;
 }
+
+.rs-dropdown-menu {
+  width:18em;
+  padding:5px;
+}
