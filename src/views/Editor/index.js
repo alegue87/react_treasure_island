@@ -73,8 +73,9 @@ class Editor extends React.Component {
 
     if(!_.isEmpty(this.state.actionList)) { // execute actions 'insert' - 'next' and 'play'
       let actionList = this.state.actionList;
-      if(prevState.action !== actionList[actionList.length-1]) {
-        this.setState({action: actionList.pop()})
+      if(this.state.action !== actionList[actionList.length-1]) {
+        const action = actionList.pop();
+        _.delay(this.setState.bind(this), 100, {action: action})
       }
     }
   }
@@ -98,14 +99,16 @@ class Editor extends React.Component {
   insertNextNplay(){
     if(this.state.canAttach === false) {
       Notification['info']({title: 'Abilitare inserimento'})
-      return
+      return ''
     }
 
     let actionList = [];
     actionList.push('play');
     actionList.push('next');
     actionList.push('insert');
-    this.setState({actionList});
+    this.setState({actionList, 'action': ''}); // importante per evitare, al refresh 
+                                               // che l'azione venga ripetuta
+    return '';
   }
 
   trigger(action){

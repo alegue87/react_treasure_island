@@ -15,6 +15,7 @@ class AudioList extends React.Component {
     this.currentPlay = ''
     this.currentPlayIndex = this.firstIndex = 0
     this.lastActionTime = Date.now();
+    this.prevAction = '';
     this.reference = '';
     this.selectAudio = this.selectAudio.bind(this);
   }
@@ -24,7 +25,8 @@ class AudioList extends React.Component {
     fetchAudioList({postId})(dispatch);
   }
 
-  componentDidUpdate(){
+  componentDidUpdate(prevProps, prevState){
+
     if(!_.isEmpty(this.list)) {
       if(_.isEmpty(this.currentPlay)) {
         // first run
@@ -86,32 +88,6 @@ class AudioList extends React.Component {
     //this.previousPlay = this.getAudioId(this.currentPlayIndex>this.firstIndex ? this.currentPlayIndex-1 : this.firstIndex)
   }
 
-  switchAction(){
-    // evita doppio click
-    if((Date.now() - this.lastActionTime ) < 200){
-      return
-    }
-    this.lastActionTime = Date.now();
-    console.log('action: ' + this.props.action)
-    switch(this.props.action) {
-      case 'play':
-        this.play();
-        break;
-      case 'prev':
-        this.prevTrack();
-        break;
-      case 'next':
-        this.nextTrack();
-        break;
-      case 'refresh-audio-list':
-        Notification['info']({title:'refresh audio list'})
-        const { dispatch, postId, showAlsoUnassigned } = this.props;
-        dispatch({type: AUDIO_RESET})
-        fetchAudioList({postId})(dispatch);
-        break;
-    }
-  }
-
   selectAudio(item){
     const id = this.getIdFromFilename(item.name)
     this.currentPlayIndex = id;
@@ -127,9 +103,32 @@ class AudioList extends React.Component {
     let componentList = null;
     if(!_.isEmpty(audioList)) {
 
-      const list = _.filter(audioList, audio => audio.post_parent == postId || audio.post_parent == 0 )
+      if((Date.now() - this.lastActionTime ) > 200 && // ms
+        this.prevAction !== this.props.action) {
 
-      this.switchAction();
+        console.log('action: ' + this.props.action + ' ---- pre:' + this.prevAction)
+        this.prevAction = this.props.action;
+        this.lastActionTime = Date.now();
+        switch(this.props.action) {
+          case 'play':
+            this.play();
+            break;
+          case 'prev':
+            this.prevTrack();
+            break;
+          case 'next':
+            this.nextTrack();
+            break;
+          case 'refresh-audio-list':
+            Notification['info']({title:'refresh audio list'})
+            const { dispatch, postId, showAlsoUnassigned } = this.props;
+            dispatch({type: AUDIO_RESET})
+            fetchAudioList({postId})(dispatch);
+            break;
+        }
+      } 
+
+      const list = _.filter(audioList, audio => audio.post_parent == postId || audio.post_parent == 0 )
 
       let playingNameId = 0;
       _.forEach( list, (item) => { 

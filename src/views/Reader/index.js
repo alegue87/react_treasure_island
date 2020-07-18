@@ -26,6 +26,7 @@ class Selectors extends React.Component {
       let classes = 'piece';
       return( 
         <span 
+          key={subCounter}
           id={id} 
           onClick={this.props.handleSelect} 
           className={classes} 
@@ -221,7 +222,10 @@ class Reader extends React.Component {
 
       // Skip duplicati
       // Da evitare in fase di inserimento: TODO
-      while(references[index+1].name == references[index].name) {
+      while(
+        !_.isUndefined(references[index+1]) && 
+        references[index+1].name == references[index].name) {
+        
         ++index;
         if(_.isUndefined(references[index+1])) break;
       }
@@ -263,7 +267,7 @@ class Reader extends React.Component {
       let counter = 0;
       content = _.map(content, data => {
         counter++;
-        return <p><Selectors selected={selected} counter={counter} handleSelect={this.handleSelect} data={data}/></p>
+        return <p key={counter}><Selectors selected={selected} counter={counter} handleSelect={this.handleSelect} data={data}/></p>
       })
 
       let itaContent = postIta.content.rendered;
