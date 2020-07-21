@@ -6,8 +6,8 @@ import { Panel, FlexboxGrid, Col, Button, Sidenav, Notification } from 'rsuite';
 import _ from 'lodash';
 import { Howl, Howler } from 'howler';
 import Dictionary from '../../components/Dictionary';
-
 //import $ from 'jquery';
+import { StickyContainer, Sticky } from 'react-sticky';
 
 import './style.css';
 
@@ -127,7 +127,9 @@ class Reader extends React.Component {
 
   getReferences(){
     const { referencesList } = this.props;
-    return referencesList[this.state.postEng];
+    return _.sortBy(referencesList[this.state.postEng], ['name']); // sort necessario dato che alcune
+                                                                   // volte l'ordine tra gli audio attribuiti
+                                                                   // non è crescente.
   }
 
   componentDidUpdate(prevProps, prevState){
@@ -273,16 +275,21 @@ class Reader extends React.Component {
       let itaContent = postIta.content.rendered;
 
       return (
+        <StickyContainer>
         <FlexboxGrid>
           <FlexboxGrid.Item  componentClass={Col} xs={24} sm={24} lg={24} xl={24}>
-            <Panel className='player'>
-              <Button onClick={ () => this.play() }>Play</Button>
-              <Button onClick={ this.playAll }>Play All</Button>
-              <Button onClick={ () => this.setState({stopPlay: true}) }>Stop</Button>
-              <Button onClick={ () => this.setState({showTraduction:true}) }>Show word definitions</Button>
+            <Sticky>
+              { ({style}) => 
+              <Panel className='player' style={style}>
+                <Button onClick={ () => this.play() }>Play</Button>
+                <Button onClick={ this.playAll }>Play All</Button>
+                <Button onClick={ () => this.setState({stopPlay: true}) }>Stop</Button>
+                <Button onClick={ () => this.setState({showTraduction:true}) }>Show word definitions</Button>
 
-              {/*<Button onClick={ () => this.trigger('insert') }>Insert</Button>*/}
-            </Panel>
+                {/*<Button onClick={ () => this.trigger('insert') }>Insert</Button>*/}
+              </Panel>
+              }
+            </Sticky>
           </FlexboxGrid.Item>
           <FlexboxGrid.Item id='eng' className='text-container eng' componentClass={Col} xs={12} sm={12} lg={12} xl={12}>
             <h2 dangerouslySetInnerHTML={{__html: postEng.title.rendered}}></h2>
@@ -302,6 +309,7 @@ class Reader extends React.Component {
             close={ this.hideTraduction }
           />
         </FlexboxGrid>
+        </StickyContainer>
       )
     }
     else {
