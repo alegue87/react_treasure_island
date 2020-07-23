@@ -64,7 +64,7 @@ class Reader extends React.Component {
     this.hideTraduction = this.hideTraduction.bind(this);
 
     this.fetchData()
-    //Notification['info']({title:'construct'})
+    Notification['info']({title:'construct'})
   }
 
   fetchData(){
