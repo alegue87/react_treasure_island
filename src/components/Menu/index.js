@@ -7,6 +7,7 @@ import { bindActionsCreator } from 'redux';
 import { Link } from 'react-router-dom';
 import { fetchCategory } from './actions';
 import { getCategoryPosts } from './reducer';
+import config from '../../config/config';
 import _ from 'lodash';
 
 import './style.css'
@@ -97,7 +98,7 @@ class Navigation extends React.Component {
                 <Link to={'/'}>Home</Link>
               </Nav.Item>
 
-              {DropdownCategory('Treasure Island', posts)}
+              {DropdownCategory('Treasure Island', posts, config.isAdmin)}
               
               {/*
               <Dropdown title="Altro">
@@ -128,7 +129,7 @@ function getPost(posts, cap, lang) {
   return p;
 }
 
-const DropdownCategory = (title, posts) => {
+const DropdownCategory = (title, posts, isAdmin) => {
 
   if(_.isEmpty(posts)) return null;
 
@@ -146,9 +147,11 @@ const DropdownCategory = (title, posts) => {
         descriptionList[subCategoryName] = []
       }
       list[subCategoryName].push(
-        <Dropdown.Item key={key}><div style={{display:'flex'}}>
-          <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>{_.capitalize(cap.name.split('-')[0]) + ' ' + cap.name.split('-')[1]}</Link> <divider />
-          <Link to={"/editor/"+engPost.ID}>EDIT</Link></div>
+        <Dropdown.Item key={key}>
+          <div style={{display:'flex'}}>
+            <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>{_.capitalize(cap.name.split('-')[0]) + ' ' + cap.name.split('-')[1]}</Link> <Divider />
+            { isAdmin ? <Link to={"/editor/"+engPost.ID}>EDIT</Link> : null }
+          </div>
         </Dropdown.Item>
       )
       descriptionList[subCategoryName] = post.sub_category.description;
