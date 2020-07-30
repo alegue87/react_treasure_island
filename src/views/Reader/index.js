@@ -286,7 +286,7 @@ class Reader extends React.Component {
     const { selected, action, playOnClick, wordSelected, showTraduction } = this.state;
 
     if(!_.isNil(postEng) && !_.isNil(postIta)) {
-      Notification['info']({title:'render'})
+      //Notification['info']({title:'render'})
       let engContent = null;
       let content = postEng.content.rendered.split('<p>')
       content = _.filter(content, data => !_.isEmpty(_.replace(data, /\n/, '')) )

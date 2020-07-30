@@ -87,7 +87,7 @@ class Navigation extends React.Component {
         <Navbar {...this.props} className='main-nav'>
           <Navbar.Header>
             <a href="/" className="navbar-brand logo">
-              LOGO
+              <Icon icon='anchor'/>
             </a>
           </Navbar.Header>
           <Navbar.Body>

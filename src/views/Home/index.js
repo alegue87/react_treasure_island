@@ -25,14 +25,26 @@ class Home extends React.Component{
             <div style={{textAlign:'center'}}>
               <h1>Treasure Island</h1>
               <h3>Martin Louis Stevenson</h3>
+              <figure>
+                <img
+                  style={{height:'500px', borderRadius:'5px'}}
+                  src='https://images.unsplash.com/photo-1564845654222-d437f029c5c4?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1351&q=80'
+                  alt='Alfonso Reyes - boat'
+                />
+                <figcaption>Image from unsplash by Alonso Reyes</figcaption>
+              </figure>
               <hr/>
               <p>Audio-libro bilingue Inglese-Italiano con supporto dizionario (Oxford)</p>
               <p>Letto da: Mark F. Smith, audio completo su <a href='https://www.youtube.com/watch?v=PuiDkBO_SAY'>Youtube</a></p>
               <p>Traduzione da: <a href='https://libri.freenfo.net/3/3044030.html'>libri.freenfo.net</a></p>
-              <p>Sviluppato da: Alessio Guerriero</p>
+              <p>Dev by: Alessio Guerriero</p>
             </div>
             <hr/>
             <h3>Utilizzo</h3>
+              <div
+                dangerouslySetInnerHTML={
+                  {__html:'<iframe width="100%" height="600px" src="https://www.youtube.com/embed/UwHFogMirgU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>'}}
+              />
             <hr/>
             <h3>Contents</h3>
             {DropdownCategory('Treasure Island', posts, config.isAdmin)}
