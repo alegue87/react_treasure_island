@@ -149,24 +149,28 @@ const DropdownCategory = (title, posts, isAdmin) => {
       list[subCategoryName].push(
         <Dropdown.Item key={key}>
           <div style={{display:'flex'}}>
-            <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>{_.capitalize(cap.name.split('-')[0]) + ' ' + cap.name.split('-')[1]}</Link> <Divider />
+            <Link to={"/reader/"+engPost.ID+'/'+itaPost.ID}>
+              {engPost.post_title.split(' ')[1]} - {engPost.chapter}
+            </Link>
             { isAdmin ? <Link to={"/editor/"+engPost.ID}>EDIT</Link> : null }
+            <Divider />
           </div>
         </Dropdown.Item>
       )
       descriptionList[subCategoryName] = post.sub_category.description;
     }
 
-  })
-
+  })  
   let parts = [];
   for(let partName in list) {
     parts.push(
       <Dropdown.Menu key={partName} title={partName + ' - '  + descriptionList[partName]}>
-        {list[partName]}
+        {_.reverse(list[partName])}
       </Dropdown.Menu>
     )
+    parts.push(<Dropdown.Item divider/>)
   }
+  _.reverse(parts);
   return (
     <Dropdown title={title}>
       {parts}

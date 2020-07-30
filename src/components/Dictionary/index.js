@@ -19,7 +19,7 @@ class Dictionary extends Component {
   }
 
   componentDidUpdate(prevProps, prevState){
-    if (prevProps.show === false && this.props.show) {
+    if (prevProps.show === false && this.props.show && this.props.word !== '') {
       const { word, dispatch } = this.props;
       fetchMeaning({word})(dispatch);
       fetchTraduction({word})(dispatch);
@@ -29,13 +29,14 @@ class Dictionary extends Component {
   render(){
 
     const { meaning, traduction } = this.props;
+
     return (
       <Drawer
         show={this.props.show}
         onHide={this.close.bind(this)}
       >
         <Drawer.Header>
-          <Drawer.Title><b>Word: {this.props.word}</b></Drawer.Title>
+          <Drawer.Title><b>Word: "{this.props.word}"</b></Drawer.Title>
         </Drawer.Header>
           <Drawer.Body>
             { this.props.fetchingMeaning 

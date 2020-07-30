@@ -2,7 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { fetchPost, fetchReferences } from './actions';
 import { getPosts, getReferences, isFetching } from './reducer';
-import { Panel, FlexboxGrid, Col, Button, Sidenav, Notification } from 'rsuite';
+import { 
+  Panel, FlexboxGrid, Col, Sidenav, Notification, Toggle, Divider,
+  ButtonToolbar, Button, IconButton, Icon
+  } from 'rsuite';
 import _ from 'lodash';
 import { Howl, Howler } from 'howler';
 import Dictionary from '../../components/Dictionary';
@@ -49,11 +52,13 @@ class Reader extends React.Component {
       selectedPiece:'',      // for word selection
       audioSelected: 0,
       action: '',
-      stopPlay: false,
+      play: false,
+      isPlaying: false,
       postEng: postEng,
       postIta: postIta,
       wordSelected: '',       // word for traduction
-      showTraduction: false   // show Drawer traduction
+      showTraduction: false,  // show Drawer traduction
+      playOnClick: true,      // Play selection on click if active
 
     }
     this.oldSelected = this.state.selected;
@@ -64,7 +69,7 @@ class Reader extends React.Component {
     this.hideTraduction = this.hideTraduction.bind(this);
 
     this.fetchData()
-    Notification['info']({title:'construct'})
+    //Notification['info']({title:'construct'})
   }
 
   fetchData(){
@@ -84,6 +89,13 @@ class Reader extends React.Component {
 
   componentDidMount(){
     //Notification['info']({title:'mounted'})
+    _.delay(() => {
+      window.scroll({
+        top: 0,
+        left: 0,
+        behavior: 'smooth'
+      });
+    },1000);
   }
 
   getSelectionId(reference){
@@ -140,6 +152,11 @@ class Reader extends React.Component {
       _.delay(this.insertReferencesIntoText.bind(this), 1500, references)
       _.delay(this.alignText.bind(this), 1500)
     }
+
+    if(this.state.play) {
+      this.play();
+      this.setState({play:false})
+    }
   }
 
   updateSelection(current){
@@ -165,9 +182,17 @@ class Reader extends React.Component {
         selected: current.id, 
         selectedReference: reference
       });
+
+      if(this.state.playOnClick) {
+        this.setState({play:true})
+      }
     }
+
+    // Select word for dictionary's definitions 
     const word = this.onlyWord(current.innerHTML);
-    Notification['info']({'placement':'topStart', title: 'Word selected', description:word});
+    if( !this.state.playOnClick ) {
+      Notification['info']({title: 'Word selected for dictionary', description:word});
+    }
     this.setState({
       wordSelected: word
     });
@@ -258,7 +283,7 @@ class Reader extends React.Component {
     const postEng = this.props.posts.find( post => post.id === Number(this.state.postEng) )
     const postIta = this.props.posts.find( post => post.id === Number(this.state.postIta) )
 
-    const { selected, action } = this.state;
+    const { selected, action, playOnClick, wordSelected, showTraduction } = this.state;
 
     if(!_.isNil(postEng) && !_.isNil(postIta)) {
       Notification['info']({title:'render'})
@@ -281,12 +306,40 @@ class Reader extends React.Component {
             <Sticky>
               { ({style}) => 
               <Panel className='player' style={style}>
-                <Button onClick={ () => this.play() }>Play</Button>
-                <Button onClick={ this.playAll }>Play All</Button>
-                <Button onClick={ () => this.setState({stopPlay: true}) }>Stop</Button>
-                <Button onClick={ () => this.setState({showTraduction:true}) }>Show word definitions</Button>
+                <ButtonToolbar style={{display:'flex', alignItems:'center'}}>
+                  <IconButton 
+                    disabled={playOnClick ? true : false}
+                    color='blue'
+                    onClick={ () => this.play() }
+                    icon={<Icon icon='arrow-right'/> }
+                  >Play
+                  </IconButton>
 
-                {/*<Button onClick={ () => this.trigger('insert') }>Insert</Button>*/}
+                  <Toggle 
+                    size='lg'
+                    checkedChildren='Play on click' 
+                    unCheckedChildren='Select word'
+                    checked={playOnClick}
+                    onChange={(checked) => this.setState({playOnClick:checked})}
+                  />
+                  <Divider vertical/>
+
+                  <Button 
+                    color='blue'
+                    onClick={ this.playAll }>Play All</Button>
+                  <Button 
+                    color='violet'
+                    onClick={ () => this.setState({stopPlay: true}) }>Stop</Button>
+                  <Divider vertical/>
+                  
+                  <Button 
+                    color='green'
+                    onClick={ () => this.setState({showTraduction:true}) }>
+                    Dictionary { wordSelected ? `for "${wordSelected}"` : null }
+                  </Button>
+
+                  {/*<Button onClick={ () => this.trigger('insert') }>Insert</Button>*/}
+                </ButtonToolbar>
               </Panel>
               }
             </Sticky>
@@ -304,8 +357,8 @@ class Reader extends React.Component {
             </Panel>
           </FlexboxGrid.Item>
           <Dictionary
-            word={this.state.wordSelected}
-            show={this.state.showTraduction}
+            word={wordSelected}
+            show={showTraduction}
             close={ this.hideTraduction }
           />
         </FlexboxGrid>

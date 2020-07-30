@@ -8,6 +8,8 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
+import config  from './config/config';
+import _ from 'lodash';
 
 //import { isMenuVisible } from './components/NavBar/reducer';
 //import { closeMenu } from './components/NavBar/actions';
@@ -27,7 +29,8 @@ class App extends React.Component {
     super(props);
     this.handleSelect = this.handleSelect.bind(this);
     this.state = {
-      activeKey: null
+      activeKey: null,
+      loading: false,
     };
   }
   handleSelect(eventKey) {
@@ -37,6 +40,12 @@ class App extends React.Component {
   }
   render() {
     const { activeKey } = this.state;
+
+    // Wait for a login with demo account
+    if(config.token === undefined) {
+      _.delay((state) => this.setState(state), 1000, {loading:!this.state.loading})
+      return <div>Loading... {this.state.loading}</div>
+    }
 
     return (
       <Container className="App">
@@ -50,7 +59,7 @@ class App extends React.Component {
             </FlexboxGrid.Item>
           </FlexboxGrid>
         </div>
-        <Footer className='footer-container'>Footer</Footer>
+        <Footer className='footer-container'>Treasure Island by Robert Louis Stevenson</Footer>
       </Container>
     );
   }

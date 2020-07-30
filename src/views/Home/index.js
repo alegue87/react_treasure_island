@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link, Redirect } from 'react-router-dom';
-import { Panel, Divider, List } from 'rsuite';
+import { Panel, Divider, List, FlexboxGrid, Col } from 'rsuite';
 import config from '../../config/config';
 import _ from 'lodash';
+import './style.css';
 
 class Home extends React.Component{
 
@@ -17,22 +18,27 @@ class Home extends React.Component{
     const { posts } = this.props;
 
     return(
-      <Panel>
-        <div style={{textAlign:'center'}}>
-          <h1>Treasure Island</h1>
-          <h3>Martin Louis Stevenson</h3>
-          <hr/>
-          <p>Audio libro bilingue (Eng-Ita) con supporto dizionario (Oxford)</p>
-          <p>Letto da: Mark Smith</p>
-          <p>Traduzione da: <a href='https://libri.freenfo.net/3/3044030.html'>libri.freenfo.net</a></p>
-          <p>Sviluppato da: Alessio Guerriero</p>
-        </div>
-        <hr/>
-        <h3>Utilizzo</h3>
-        <hr/>
-        <h3>Contents</h3>
-        {DropdownCategory('Treasure Island', posts, config.isAdmin)}
-      </Panel>
+      <FlexboxGrid>
+        <FlexboxGrid.Item componentClass={Col} lg={4} xl={5}/>
+        <FlexboxGrid.Item componentClass={Col} lg={16} xl={14}>
+          <Panel>
+            <div style={{textAlign:'center'}}>
+              <h1>Treasure Island</h1>
+              <h3>Martin Louis Stevenson</h3>
+              <hr/>
+              <p>Audio-libro bilingue Inglese-Italiano con supporto dizionario (Oxford)</p>
+              <p>Letto da: Mark F. Smith, audio completo su <a href='https://www.youtube.com/watch?v=PuiDkBO_SAY'>Youtube</a></p>
+              <p>Traduzione da: <a href='https://libri.freenfo.net/3/3044030.html'>libri.freenfo.net</a></p>
+              <p>Sviluppato da: Alessio Guerriero</p>
+            </div>
+            <hr/>
+            <h3>Utilizzo</h3>
+            <hr/>
+            <h3>Contents</h3>
+            {DropdownCategory('Treasure Island', posts, config.isAdmin)}
+          </Panel>
+        </FlexboxGrid.Item>
+      </FlexboxGrid>
     )
   }
 }
@@ -87,7 +93,7 @@ const DropdownCategory = (title, posts, isAdmin) => {
     )
   }
   return (
-    <div>
+    <div id='contents'>
       {_.reverse(parts)}
     </div>
   )

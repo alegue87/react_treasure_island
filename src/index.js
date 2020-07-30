@@ -33,6 +33,7 @@ ReactDOM.render(
             <Route path="/login" component={Login} />
             <Route path="/editor/:post" component={Editor} />
             <Route path="/reader/:postEng/:postIta" render={ props => <Reader {...props} key={Date.now()}/> } />
+                                                                      {/* For re-mount component when route change */}
           </Switch>
         </App>
       </Router>
