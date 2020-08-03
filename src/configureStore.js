@@ -29,14 +29,13 @@ const rootPersistConfig = {
     'toastr',
     'reviews',
     */
-    'products',
     'posts',
     'audio',
     'reader',
     'category',
     'dictionary'
   ],
-  // debug: true,
+  debug: true
 };
 
 

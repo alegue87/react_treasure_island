@@ -148,7 +148,7 @@ class Reader extends React.Component {
 
     const references = this.getReferences()
     //this.oldSelected = this.state.selected;
-    if( !_.isEmpty(references) && !tooEarly(1000) ) {
+    if( !_.isEmpty(references) ) { //&& !tooEarly(1000) ) { non va al cambiamento di pagina
       _.delay(this.insertReferencesIntoText.bind(this), 1500, references)
       _.delay(this.alignText.bind(this), 1500)
     }

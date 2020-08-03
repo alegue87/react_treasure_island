@@ -21,6 +21,7 @@ const references = (state = [], action) => {
     case REQUEST_REFERENCES:
       return state;
     case RECEIVE_REFERENCES:
+      console.log(action.references)
       return Object.assign(action.references, state) // rimuove doppioni
     default:
       return state;

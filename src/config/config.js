@@ -1,7 +1,13 @@
 import 'whatwg-fetch';
 
 //const siteurl = 'http://wptest.me'
-const siteurl = 'http://treasureisland.local'
+let siteurl;
+if ( window.siteurl === undefined ) {
+  siteurl = 'http://localhost:3000' // Frontend separato da backend ( non in plugin )
+}
+else {
+  siteurl = window.siteurl;
+}
 
 let apiurl = siteurl + '/wp-json/wp/v2/';
 let login = siteurl + '/wp-json/jwt-auth/v1/token';
